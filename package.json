@@ -1,0 +1,23 @@
+{
+  "name": "cmssy",
+  "version": "0.0.1",
+  "main": "server.js",
+  "description": "The tidy CMS with a REST API",
+  "bin": "./cmssy.js",
+  "scripts": {
+    "start": "node cmssy.js",
+    "postinstall": "bower install"
+  },
+  "author": {
+    "name": "Andrea Stella",
+    "email": "adr.stella@gmail.com",
+    "url": "http://mccxiv.me/"
+  },
+  "repository": "mccxiv/cmssy",
+  "preferGlobal": true,
+  "dependencies": {
+    "express": "^4.13.3",
+    "lowdb": "^0.10.2"
+  },
+  "devDependencies": {}
+}
