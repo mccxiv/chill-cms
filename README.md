@@ -20,7 +20,7 @@
   - [ ] Installation mode is then disabled.
 
 
-- [ ] GET /status, returns info about the server, including whether the user is authenticated. Unauthenticated users may only perform GET requests.
+- [x] GET /status, returns info about the server, including whether the user is authenticated. Unauthenticated users may only perform GET requests.
 
 
 - [ ] /login lets the user start a session. The site's dashboard should redirect users here first to make sure they have write access.
