@@ -16,6 +16,7 @@
   "repository": "mccxiv/cmssy",
   "preferGlobal": true,
   "dependencies": {
+    "body-parser": "^1.13.3",
     "express": "^4.13.3",
     "lowdb": "^0.10.2",
     "underscore-db": "^0.9.0"

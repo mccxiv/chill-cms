@@ -26,17 +26,17 @@
 - [ ] /login lets the user start a session. The site's dashboard should redirect users here first to make sure they have write access.
 
 
-- [ ] Save and read content via a REST API
+- [x] Save and read content via a REST API
  - [x] GET /cars, GET /cars/3
    - Gets all cars or one with a specific `id`
- - [ ] POST /cars
+ - [x] POST /cars
    - Add an object to the cars array
    - `cars` array is created on the fly if not found
    - Error on `id` conflict
-   - Generates sequential `id` if missing
- - [ ] PUT /cars/3
-   - Replace existing car, error if not found
- - [ ] DELETE /cars/3
+   - Generates `id` if missing
+ - [x] PUT /cars
+   - Replace existing car, error if `id` not found
+ - [x] DELETE /cars/3
    - Remove specific car from array, error if not found
 
 
