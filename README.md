@@ -16,12 +16,12 @@
 - [x] Serve ./public/ as static files, this is your site.
 
 
-- [x] If ./users.json is missing enters Installation mode.
+- [x] Enter Installation mode if ./cmssy.json's admin array is empty.
 
 
 - [ ] When in installation mode, /install becomes available to browsers
   - [ ] A web UI provided by the CMS lets the user create an admin account.
-  - [ ] Credentials stored in ./users.json which is not API accessible.
+  - [ ] Credentials stored in ./cmssy.json which is not API accessible.
   - [ ] Installation mode is then disabled.
 
 
