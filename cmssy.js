@@ -32,7 +32,7 @@ function handleGet() {
 
     console.log('Route /:resource/:id? | resource: '+resourceName+', id: '+id);
 
-    result = isNaN(id)? resources : resources.findWhere({id: id});
+    result = isNaN(id)? resources : resources.getById(id);
     if (result) res.json(result);
     else res.status(404).end();
   });
