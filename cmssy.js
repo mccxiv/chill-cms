@@ -1,9 +1,9 @@
-var express = require('express');
-var lowdb = require('lowdb');
-var bodyParser = require('body-parser');
-var udb = require('underscore-db');
-var session = require('express-session');
 var path = require('path');
+var lowdb = require('lowdb');
+var express = require('express');
+var udb = require('underscore-db');
+var bodyParser = require('body-parser');
+var session = require('express-session');
 
 var app = express();
 var router = express.Router();
