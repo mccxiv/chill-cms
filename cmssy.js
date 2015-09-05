@@ -2,13 +2,14 @@ var path = require('path');
 var lowdb = require('lowdb');
 var express = require('express');
 var udb = require('underscore-db');
+var bcrypt = require('bcrypt-nodejs');
 var bodyParser = require('body-parser');
 var session = require('express-session');
 
 var app = express();
 var router = express.Router();
-var cmsdb = lowdb('./db.json');
-var userdb = lowdb('./users.json');
+var sitedb = lowdb('./site.json');
+var cmssydb = lowdb('./cmssy.json');
 var installing = false;
 var server = app.listen(80);
 
@@ -28,12 +29,12 @@ function init() {
 }
 
 function addDatabaseMixins() {
-  cmsdb._.mixin(udb);
-  cmsdb._.mixin(udb);
+  sitedb._.mixin(udb);
+  cmssydb._.mixin(udb);
 }
 
 function maybeEnterInstallationMode() {
-  var admins = userdb('admins');
+  var admins = cmssydb('admins');
   if (!Array.isArray(admins) || admins.size() < 1) {
     console.log('No admin accounts found. Entering Installation mode.');
     console.log('Visit /install to create an account.');
@@ -58,16 +59,34 @@ function serveStaticStuff() {
 
 function handleAuthentication() {
   app.post('/cmssy/admins', function(req, res) {
-    var admins = userdb('admins');
+    var admins = cmssydb('admins');
     var username = req.body.username;
     var password = req.body.password;
     if (!installing) res.status(403).end();
     else if (!username || !password) res.status(400).end();
     else {
+      var entry = {username: username, password: bcrypt.hashSync(password)};
       var current = admins.findWhere({username: username});
-      if (current) admins.updateWhere({username: username}, req.body);
-      else admins.insert(req.body);
+      if (current) admins.updateWhere({username: username}, entry);
+      else admins.insert(entry);
       installing = false;
+    }
+  });
+
+  app.post('/cmssy/authenticate', function(req, res) {
+    var admins = cmssydb('admins');
+    var username = req.body.username;
+    var password = req.body.password;
+    if (!username || !password) res.status(400).end();
+    else {
+      var admin = admins.findWhere({username: username});
+      if (!admin) res.status(403).end();
+      else {
+        bcrypt.compare(password, admin.password, function(err, res) {
+          if (err || !res) res.status(403).end();
+          else req.session.admin = true;
+        });
+      }
     }
   });
 }
@@ -81,13 +100,13 @@ function denyUnauthenticatedApiWrites() {
 
 function handleApiGet() {
   router.get('/:resource', function(req, res) {
-    res.json(cmsdb(req.params.resource));
+    res.json(sitedb(req.params.resource));
     console.log('Route /:resource | r: '+req.params.resource);
   });
 
   router.get('/:resource/:id', function(req, res) {
     var id = toIntIfValid(req.params.id);
-    var result = cmsdb(req.params.resource).getById(id);
+    var result = sitedb(req.params.resource).getById(id);
     if (result) res.json(result);
     else res.status(404).end();
     console.log('Route /:resource/:id | r: '+req.params.resource+' id: '+id);
@@ -96,7 +115,7 @@ function handleApiGet() {
 
 function handleApiPost() {
   router.post('/:resource', function(req, res) {
-    var resources = cmsdb(req.params.resource);
+    var resources = sitedb(req.params.resource);
     var id = toIntIfValid(req.body.id);
     if (id !== undefined && resources.getById(id)) res.status(409).end();
     else {
@@ -109,7 +128,7 @@ function handleApiPost() {
 
 function handleApiPut() {
   router.put('/:resource', function(req, res) {
-    var resources = cmsdb(req.params.resource);
+    var resources = sitedb(req.params.resource);
     var result = resources.updateById(req.body.id, req.body);
     if (result) res.end();
     else res.status(404).end();
@@ -119,7 +138,7 @@ function handleApiPut() {
 
 function handleApiDelete() {
   router.delete('/:resource/:id', function(req, res) {
-    var resources = cmsdb(req.params.resource);
+    var resources = sitedb(req.params.resource);
     var id = toIntIfValid(req.params.id);
     var result = resources.removeById(id);
     if (result) res.end();
