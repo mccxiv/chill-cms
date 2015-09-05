@@ -2,9 +2,14 @@
 
 > You provide the site, the CMS provides data storage and authentication
 
-##### Things missing from the initial release:
-- Private content, which would only be accessible to authenticated users.
-- File uploads. They should be hosted elsewhere for now.
+##### Limitations of the first release:
+- No private content, which would only be accessible to authenticated users.
+- No file uploads. They should be hosted elsewhere for now.
+
+
+##### General limitations:
+- No server side validation.
+  - This means only trusted users can perform write operations. Site visitors cannot trigger an action that would add records to the database.
 
 
 ##### Implementation checklist:
