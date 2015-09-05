@@ -6,6 +6,7 @@ var session = require('express-session');
 var path = require('path');
 
 var app = express();
+var router = express.Router();
 var cmsdb = lowdb('./db.json');
 var userdb = lowdb('./users.json');
 var installing = false;
@@ -46,6 +47,7 @@ function addMiddlewares() {
     resave: false,
     saveUninitialized: false
   }));
+  app.use('/api', router);
 }
 
 function serveStaticStuff() {
@@ -54,28 +56,29 @@ function serveStaticStuff() {
 }
 
 function denyUnauthenticatedWrites() {
-  app.use(function(req, res, next) {
+  router.use(function(req, res, next) {
     if (req.method === 'GET' || req.session.user) next();
     else res.status(403).end();
   });
 }
 
 function handleGet() {
-  app.get('/:resource', function(req, res) {
+  router.get('/:resource', function(req, res) {
     res.json(cmsdb(req.params.resource));
     console.log('Route /:resource | r: '+req.params.resource);
   });
 
-  app.get('/:resource/:id', function(req, res) {
-    var result = cmsdb(req.params.resource).getById(req.params.id);
+  router.get('/:resource/:id', function(req, res) {
+    var id = toIntIfValid(req.params.id);
+    var result = cmsdb(req.params.resource).getById(id);
     if (result) res.json(result);
     else res.status(404).end();
-    console.log('Route /:resource/:id | r: '+req.params.resource+' id: '+req.params.id);
+    console.log('Route /:resource/:id | r: '+req.params.resource+' id: '+id);
   });
 }
 
 function handlePost() {
-  app.post('/:resource', function(req, res) {
+  router.post('/:resource', function(req, res) {
     var resources = cmsdb(req.params.resource);
     var id = toIntIfValid(req.body.id);
     if (id !== undefined && resources.getById(id)) res.status(409).end();
@@ -88,7 +91,7 @@ function handlePost() {
 }
 
 function handlePut() {
-  app.put('/:resource', function(req, res) {
+  router.put('/:resource', function(req, res) {
     var resources = cmsdb(req.params.resource);
     var result = resources.updateById(req.body.id, req.body);
     if (result) res.end();
@@ -98,7 +101,7 @@ function handlePut() {
 }
 
 function handleDelete() {
-  app.delete('/:resource/:id', function(req, res) {
+  router.delete('/:resource/:id', function(req, res) {
     var resources = cmsdb(req.params.resource);
     var id = toIntIfValid(req.params.id);
     var result = resources.removeById(id);
