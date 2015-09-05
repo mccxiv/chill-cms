@@ -20,14 +20,14 @@
   - [ ] Installation mode is then disabled.
 
 
-- [x] GET /status, returns info about the server, including whether the user is authenticated. Unauthenticated users may only perform GET requests.
+- [ ] GET /status, returns info about the server, including whether the user is authenticated. Unauthenticated users may only perform GET requests.
 
 
 - [ ] /login lets the user start a session. The site's dashboard should redirect users here first to make sure they have write access.
 
 
 - [ ] Save and read content via a REST API
- - [ ] GET /cars, GET /cars/3
+ - [x] GET /cars, GET /cars/3
    - Gets all cars or one with a specific `id`
  - [ ] POST /cars
    - Add an object to the cars array
