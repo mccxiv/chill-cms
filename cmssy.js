@@ -19,11 +19,12 @@ function init() {
   maybeEnterInstallationMode();
   addMiddlewares();
   serveStaticStuff();
-  denyUnauthenticatedWrites(); // Must run before handlers!
-  handleGet();
-  handlePost();
-  handlePut();
-  handleDelete();
+  handleAuthentication();
+  denyUnauthenticatedApiWrites(); // Must run before handlers!
+  handleApiGet();
+  handleApiPost();
+  handleApiPut();
+  handleApiDelete();
 }
 
 function addDatabaseMixins() {
@@ -55,14 +56,30 @@ function serveStaticStuff() {
   app.use(express.static(path.resolve(process.cwd(), 'public/')));
 }
 
-function denyUnauthenticatedWrites() {
+function handleAuthentication() {
+  app.post('/cmssy/admins', function(req, res) {
+    var admins = userdb('admins');
+    var username = req.body.username;
+    var password = req.body.password;
+    if (!installing) res.status(403).end();
+    else if (!username || !password) res.status(400).end();
+    else {
+      var current = admins.findWhere({username: username});
+      if (current) admins.updateWhere({username: username}, req.body);
+      else admins.insert(req.body);
+      installing = false;
+    }
+  });
+}
+
+function denyUnauthenticatedApiWrites() {
   router.use(function(req, res, next) {
     if (req.method === 'GET' || req.session.user) next();
     else res.status(403).end();
   });
 }
 
-function handleGet() {
+function handleApiGet() {
   router.get('/:resource', function(req, res) {
     res.json(cmsdb(req.params.resource));
     console.log('Route /:resource | r: '+req.params.resource);
@@ -77,7 +94,7 @@ function handleGet() {
   });
 }
 
-function handlePost() {
+function handleApiPost() {
   router.post('/:resource', function(req, res) {
     var resources = cmsdb(req.params.resource);
     var id = toIntIfValid(req.body.id);
@@ -90,7 +107,7 @@ function handlePost() {
   });
 }
 
-function handlePut() {
+function handleApiPut() {
   router.put('/:resource', function(req, res) {
     var resources = cmsdb(req.params.resource);
     var result = resources.updateById(req.body.id, req.body);
@@ -100,7 +117,7 @@ function handlePut() {
   });
 }
 
-function handleDelete() {
+function handleApiDelete() {
   router.delete('/:resource/:id', function(req, res) {
     var resources = cmsdb(req.params.resource);
     var id = toIntIfValid(req.params.id);
