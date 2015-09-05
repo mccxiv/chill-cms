@@ -2,6 +2,7 @@ var express = require('express');
 var lowdb = require('lowdb');
 var bodyParser = require('body-parser');
 var udb = require('underscore-db');
+var session = require('express-session');
 var path = require('path');
 
 var app = express();
@@ -17,6 +18,7 @@ function init() {
   maybeEnterInstallationMode();
   addMiddlewares();
   serveStaticStuff();
+  denyUnauthenticatedWrites(); // Must run before handlers!
   handleGet();
   handlePost();
   handlePut();
@@ -28,8 +30,34 @@ function addDatabaseMixins() {
   cmsdb._.mixin(udb);
 }
 
+function maybeEnterInstallationMode() {
+  var admins = userdb('admins');
+  if (!Array.isArray(admins) || admins.size() < 1) {
+    console.log('No admin accounts found. Entering Installation mode.');
+    console.log('Visit /install to create an account.');
+    installing = true;
+  }
+}
+
 function addMiddlewares() {
   app.use(bodyParser.json());
+  app.use(session({
+    secret: 'tall gels',
+    resave: false,
+    saveUninitialized: false
+  }));
+}
+
+function serveStaticStuff() {
+  app.use(express.static(path.resolve(__dirname, 'static/')));
+  app.use(express.static(path.resolve(process.cwd(), 'public/')));
+}
+
+function denyUnauthenticatedWrites() {
+  app.use(function(req, res, next) {
+    if (req.method === 'GET' || req.session.user) next();
+    else res.status(403).end();
+  });
 }
 
 function handleGet() {
@@ -76,22 +104,8 @@ function handleDelete() {
     var result = resources.removeById(id);
     if (result) res.end();
     else res.status(404).end();
-    console.log('DELETE /:resource | r: '+req.params.resource+' id: '+id);
+    console.log('DELETE /:resource/:id | r: '+req.params.resource+' id: '+id);
   });
-}
-
-function serveStaticStuff() {
-  app.use(express.static(path.resolve(__dirname, 'static/')));
-  app.use(express.static(path.resolve(process.cwd(), 'public/')));
-}
-
-function maybeEnterInstallationMode() {
-  var admins = userdb('admins');
-  if (!Array.isArray(admins) || admins.size() < 1) {
-    console.log('No admin accounts found. Entering Installation mode.');
-    console.log('Visit /install to create an account.');
-    installing = true;
-  }
 }
 
 function toIntIfValid(input) {
