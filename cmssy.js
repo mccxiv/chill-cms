@@ -84,8 +84,8 @@ function handleAuthentication() {
       var admin = admins.findWhere({username: username});
       if (!admin) res.status(403).end();
       else {
-        bcrypt.compare(password, admin.password, function(err, res) {
-          if (err || !res) res.status(403).end();
+        bcrypt.compare(password, admin.password, function(err, result) {
+          if (err || !result) res.status(403).end();
           else {
             req.session.admin = true;
             res.json({});

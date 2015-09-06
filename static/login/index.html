@@ -1,1 +1,95 @@
-Login page!
+<!doctype html>
+
+<html>
+  <head>
+    <link rel="stylesheet" href="https://storage.googleapis.com/code.getmdl.io/1.0.4/material.indigo-pink.min.css">
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css">
+    <script src="https://storage.googleapis.com/code.getmdl.io/1.0.4/material.min.js"></script>
+    <script src="../bower_components/jquery/dist/jquery.min.js"></script>
+    <style>
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: Roboto;
+      }
+
+      h2, h3 {
+        color: #7A7A7A;
+      }
+
+      form {
+        display: flex;
+        flex-direction: column;
+      }
+
+      form button {
+        margin-top: 30px;
+      }
+
+      body > * {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+      <form>
+
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+          <input class="mdl-textfield__input" type="text" id="username">
+          <label class="mdl-textfield__label">Username</label>
+        </div>
+
+        <div class="mdl-textfield mdl-js-textfield">
+          <input class="mdl-textfield__input" type="password" id="password">
+          <label class="mdl-textfield__label">Password</label>
+        </div>
+
+        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+          Log In
+        </button>
+      </form>
+
+      <div class="success">
+        <h2 class="display-2">Login successful</h2>
+        <p>Redirecting you now...</p>
+      </div>
+
+      <div class="logged">
+        <h2 class="display-2">Already logged in.</h2>
+      </div>
+
+      <script>
+
+        $.getJSON('../cmssy/status', function(data) {
+          if (data.admin) $('.logged').fadeIn();
+          else $('form').fadeIn().css('display', 'flex');
+        });
+
+        $('form').on('submit', function(e) {
+          e.preventDefault();
+          var username = $('#username').val();
+          var password = $('#password').val();
+
+          $.ajax({
+            url: '../cmssy/login',
+            type: 'POST',
+            data: JSON.stringify({username: username, password: password}),
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            success: function() {
+              $('form').fadeOut(function() {
+                $('.success').fadeIn();
+                setTimeout(function() {
+                  window.location.replace('../');
+                }, 2000);
+              });
+            },
+            error: function() {
+              alert('Login failed');
+            }
+          });
+        });
+      </script>
+  </body>
+</html>
