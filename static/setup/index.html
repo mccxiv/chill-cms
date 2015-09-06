@@ -92,6 +92,9 @@
             success: function() {
               $('form').fadeOut(function() {
                 $('.success').fadeIn();
+                setTimeout(function() {
+                  window.location.replace('../');
+                }, 2000);
               });
             },
             error: function() {
