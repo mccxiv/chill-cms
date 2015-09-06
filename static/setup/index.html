@@ -1,107 +1,108 @@
 <!doctype html>
 
 <html>
-  <head>
+<head>
     <link rel="stylesheet" href="https://storage.googleapis.com/code.getmdl.io/1.0.4/material.indigo-pink.min.css">
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css">
     <script src="https://storage.googleapis.com/code.getmdl.io/1.0.4/material.min.js"></script>
     <script src="../bower_components/jquery/dist/jquery.min.js"></script>
     <style>
-      body {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-family: Roboto;
-      }
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: Roboto, sans-serif;
+        }
 
-      h2, h3 {
-        color: #7A7A7A;
-      }
+        h2, h3 {
+            color: #7A7A7A;
+        }
 
-      form {
-        display: flex;
-        flex-direction: column;
-      }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
 
-      form button {
-        margin-top: 30px;
-      }
+        form button {
+            margin-top: 30px;
+        }
 
-      body > * {
-        display: none;
-      }
+        body > * {
+            display: none;
+        }
     </style>
-  </head>
-  <body>
-      <form>
-        <h2 class="display-2">Cmssy Setup</h2>
+</head>
+<body>
+<form>
+    <h2 class="display-2">Cmssy Setup</h2>
 
-        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-          <input class="mdl-textfield__input" type="text" id="username">
-          <label class="mdl-textfield__label">Username</label>
-        </div>
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        <input class="mdl-textfield__input" type="text" id="username">
+        <label class="mdl-textfield__label" for="username">Username</label>
+    </div>
 
-        <div class="mdl-textfield mdl-js-textfield">
-          <input class="mdl-textfield__input" type="password" id="password">
-          <label class="mdl-textfield__label">Password</label>
-        </div>
+    <div class="mdl-textfield mdl-js-textfield">
+        <input class="mdl-textfield__input" type="password" id="password">
+        <label class="mdl-textfield__label" for="password">Password</label>
+    </div>
 
-        <div class="mdl-textfield mdl-js-textfield">
-          <input class="mdl-textfield__input" type="password" id="confirm-password">
-          <label class="mdl-textfield__label">Confirm Password</label>
-        </div>
+    <div class="mdl-textfield mdl-js-textfield">
+        <input class="mdl-textfield__input" type="password" id="confirm-password">
+        <label class="mdl-textfield__label" for="confirm-password">Confirm Password</label>
+    </div>
 
-        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
-          Create Admin Account
-        </button>
-      </form>
+    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+        Create Admin Account
+    </button>
+</form>
 
-      <div class="success">
-        <h2 class="display-2">Created successfully</h2>
-        <p>Redirecting you now...</p>
-      </div>
+<div class="success">
+    <h2 class="display-2">Created successfully</h2>
 
-      <div class="installed">
-        <h2 class="display-2">Already Set Up</h2>
-      </div>
+    <p>Redirecting you now...</p>
+</div>
 
-      <script>
+<div class="installed">
+    <h2 class="display-2">Already Set Up</h2>
+</div>
 
-        $.getJSON('../cmssy/status', function(data) {
-          if (data.installed) $('.installed').fadeIn();
-          else $('form').fadeIn().css('display', 'flex');
-        });
+<script>
 
-        $('form').on('submit', function(e) {
-          e.preventDefault();
-          var username = $('#username').val();
-          var password = $('#password').val();
-          var confirmPassword = $('#confirm-password').val();
+    $.getJSON('../cmssy/status', function (data) {
+        if (data.installed) $('.installed').fadeIn();
+        else $('form').fadeIn().css('display', 'flex');
+    });
 
-          if (password !== confirmPassword) {
+    $('form').on('submit', function (e) {
+        e.preventDefault();
+        var username = $('#username').val();
+        var password = $('#password').val();
+        var confirmPassword = $('#confirm-password').val();
+
+        if (password !== confirmPassword) {
             alert('Passwords must match.');
             return;
-          }
+        }
 
-          $.ajax({
+        $.ajax({
             url: '../cmssy/admins',
             type: 'POST',
             data: JSON.stringify({username: username, password: password}),
             contentType: 'application/json; charset=utf-8',
             dataType: 'json',
-            success: function() {
-              $('form').fadeOut(function() {
-                $('.success').fadeIn();
-                setTimeout(function() {
-                  window.location.replace('../');
-                }, 2000);
-              });
+            success: function () {
+                $('form').fadeOut(function () {
+                    $('.success').fadeIn();
+                    setTimeout(function () {
+                        window.location.replace('../');
+                    }, 2000);
+                });
             },
-            error: function() {
-              alert('Error Creating Account');
+            error: function () {
+                alert('Error Creating Account');
             }
-          });
         });
-      </script>
-  </body>
+    });
+</script>
+</body>
 </html>
