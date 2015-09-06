@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 var path = require('path');
 var lowdb = require('lowdb');
 var express = require('express');
