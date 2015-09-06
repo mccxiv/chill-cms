@@ -35,7 +35,7 @@ function addDatabaseMixins() {
 
 function maybeEnterInstallationMode() {
   var admins = cmssydb('admins');
-  if (!Array.isArray(admins) || admins.size() < 1) {
+  if (admins.size() < 1) {
     console.log('No admin accounts found. Entering Installation mode.');
     console.log('Visit /install to create an account.');
     installing = true;
@@ -70,6 +70,7 @@ function handleAuthentication() {
       if (current) admins.updateWhere({username: username}, entry);
       else admins.insert(entry);
       installing = false;
+      res.json({});
     }
   });
 
@@ -84,7 +85,10 @@ function handleAuthentication() {
       else {
         bcrypt.compare(password, admin.password, function(err, res) {
           if (err || !res) res.status(403).end();
-          else req.session.admin = true;
+          else {
+            req.session.admin = true;
+            res.json({});
+          }
         });
       }
     }
@@ -120,7 +124,7 @@ function handleApiPost() {
     if (id !== undefined && resources.getById(id)) res.status(409).end();
     else {
       resources.insert(req.body);
-      res.end();
+      res.json({});
     }
     console.log('Route /:resource | r: '+req.params.resource+' id: '+id);
   });
@@ -130,7 +134,7 @@ function handleApiPut() {
   router.put('/:resource', function(req, res) {
     var resources = sitedb(req.params.resource);
     var result = resources.updateById(req.body.id, req.body);
-    if (result) res.end();
+    if (result) res.json({});
     else res.status(404).end();
     console.log('PUT /:resource | r: '+req.params.resource+' id: '+req.body.id);
   });
@@ -141,7 +145,7 @@ function handleApiDelete() {
     var resources = sitedb(req.params.resource);
     var id = toIntIfValid(req.params.id);
     var result = resources.removeById(id);
-    if (result) res.end();
+    if (result) res.json({});
     else res.status(404).end();
     console.log('DELETE /:resource/:id | r: '+req.params.resource+' id: '+id);
   });
