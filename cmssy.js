@@ -10,8 +10,8 @@ var session = require('express-session');
 
 var app = express();
 var router = express.Router();
-var sitedb = lowdb('./site.json');
-var cmssydb = lowdb('./cmssy.json');
+var sitedb = lowdb('./site-database.json');
+var cmssydb = lowdb('./cmssy-database.json');
 var installing = false;
 
 
