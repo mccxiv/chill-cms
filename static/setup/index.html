@@ -5,7 +5,6 @@
     <link rel="stylesheet" href="https://storage.googleapis.com/code.getmdl.io/1.0.4/material.indigo-pink.min.css">
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css">
     <script src="https://storage.googleapis.com/code.getmdl.io/1.0.4/material.min.js"></script>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <script src="../bower_components/jquery/dist/jquery.min.js"></script>
     <style>
       body {
@@ -28,7 +27,7 @@
         margin-top: 30px;
       }
 
-      .success {
+      body > * {
         display: none;
       }
     </style>
@@ -62,7 +61,17 @@
         <p>Redirecting you now...</p>
       </div>
 
+      <div class="installed">
+        <h2 class="display-2">Already Set Up</h2>
+      </div>
+
       <script>
+
+        $.getJSON('../cmssy/status', function(data) {
+          if (data.installed) $('.installed').fadeIn();
+          else $('form').fadeIn().css('display', 'flex');
+        });
+
         $('form').on('submit', function(e) {
           e.preventDefault();
           var username = $('#username').val();

@@ -19,29 +19,29 @@
 - [x] Enter Installation mode if ./cmssy.json's admin array is empty.
 
 
-- [ ] When in installation mode, /install becomes available to browsers
-  - [ ] A web UI provided by the CMS lets the user create an admin account.
-  - [ ] Credentials stored in ./cmssy.json which is not API accessible.
-  - [ ] Installation mode is then disabled.
+- [x] When in installation mode, /setup becomes available to browsers
+  - [x] A web UI provided by the CMS lets the user create an admin account.
+  - [x] Credentials stored in ./cmssy.json which is not API accessible.
+  - [x] Installation mode is then disabled.
 
 
-- [ ] GET /status, returns info about the server, including whether the user is authenticated. Unauthenticated users may only perform GET requests.
+- [x] GET /cmssy/status, returns info about the server, including whether the user is authenticated. Unauthenticated users may only perform GET requests.
 
 
 - [ ] /login lets the user start a session. The site's dashboard should redirect users here first to make sure they have write access.
 
 
 - [x] Save and read content via a REST API
- - [x] GET /cars, GET /cars/3
+ - [x] GET /api/cars, GET /api/cars/3
    - Gets all cars or one with a specific `id`
- - [x] POST /cars
+ - [x] POST /api/cars
    - Add an object to the cars array
    - `cars` array is created on the fly if not found
    - Error on `id` conflict
    - Generates `id` if missing
- - [x] PUT /cars
+ - [x] PUT /api/cars
    - Replace existing car, error if `id` not found
- - [x] DELETE /cars/3
+ - [x] DELETE /api/cars/3
    - Remove specific car from array, error if not found
 
 

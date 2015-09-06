@@ -21,7 +21,8 @@ function init() {
   addMiddlewares();
   serveStaticStuff();
   handleAuthentication();
-  denyUnauthenticatedApiWrites(); // Must run before handlers!
+  handleStatus();
+  denyUnauthenticatedApiWrites(); // Must run before api handlers!
   handleApiGet();
   handleApiPost();
   handleApiPut();
@@ -74,7 +75,7 @@ function handleAuthentication() {
     }
   });
 
-  app.post('/cmssy/authenticate', function(req, res) {
+  app.post('/cmssy/login', function(req, res) {
     var admins = cmssydb('admins');
     var username = req.body.username;
     var password = req.body.password;
@@ -92,6 +93,15 @@ function handleAuthentication() {
         });
       }
     }
+  });
+}
+
+function handleStatus() {
+  app.get('/cmssy/status', function(req, res) {
+    res.json({
+      admin: req.session.admin,
+      installed: !installing
+    });
   });
 }
 
