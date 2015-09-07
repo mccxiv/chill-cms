@@ -110,7 +110,7 @@ function handleStatus() {
 
 function denyUnauthenticatedApiWrites() {
 	router.use(function (req, res, next) {
-		if (req.method === 'GET' || req.session.user) next();
+		if (req.method === 'GET' || req.session.admin) next();
 		else res.status(403).end();
 	});
 }
