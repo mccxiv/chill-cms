@@ -117,9 +117,11 @@ function denyUnauthenticatedApiWrites() {
 	});
 }
 
-function enforceIdType(req, res, next) {
-	if (req.body.id === undefined || typeof req.body.id === typeOfId) next();
-	else res.status(400).send('id must be a '+typeOfId);
+function enforceIdType() {
+	router.use(function(req, res, next) {
+		if (req.body.id === undefined || typeof req.body.id === typeOfId) next();
+		else res.status(400).send('id must be a '+typeOfId);
+	});
 }
 
 function handleApiGet() {
