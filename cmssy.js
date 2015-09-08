@@ -10,9 +10,10 @@ var session = require('express-session');
 
 var app = express();
 var router = express.Router();
-var sitedb = lowdb('./site-database.json');
-var cmssydb = lowdb('./cmssy-database.json');
+var sitedb = lowdb('./site-database.json', {async: false});
+var cmssydb = lowdb('./cmssy-database.json', {async: false});
 var installing = false;
+var typeOfId = 'string'; // Currently only supports strings
 
 
 init();
@@ -26,6 +27,7 @@ function init() {
 	handleAuthentication();
 	handleStatus();
 	denyUnauthenticatedApiWrites(); // Must run before api handlers!
+	enforceIdType();
 	handleApiGet();
 	handleApiPost();
 	handleApiPut();
@@ -115,6 +117,11 @@ function denyUnauthenticatedApiWrites() {
 	});
 }
 
+function enforceIdType(req, res, next) {
+	if (req.body.id === undefined || typeof req.body.id === typeOfId) next();
+	else res.status(400).send('id must be a '+typeOfId);
+}
+
 function handleApiGet() {
 	router.get('/:resource', function (req, res) {
 		res.json(sitedb(req.params.resource));
@@ -145,11 +152,11 @@ function handleApiPost() {
 
 function handleApiPut() {
 	router.put('/:resource', function (req, res) {
+		console.log('PUT /:resource | r: ' + req.params.resource + ' id: ' + req.body.id);
 		var resources = sitedb(req.params.resource);
 		var result = resources.updateById(req.body.id, req.body);
 		if (result) res.json({});
 		else res.status(404).end();
-		console.log('PUT /:resource | r: ' + req.params.resource + ' id: ' + req.body.id);
 	});
 }
 
