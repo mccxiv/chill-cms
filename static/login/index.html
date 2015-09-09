@@ -62,7 +62,7 @@
 
 <script>
 
-    $.getJSON('../cmssy/status', function (data) {
+    $.getJSON('../chill/status', function (data) {
         if (data.admin) $('.logged').fadeIn();
         else $('form').fadeIn().css('display', 'flex');
     });
@@ -73,7 +73,7 @@
         var password = $('#password').val();
 
         $.ajax({
-            url: '../cmssy/login',
+            url: '../chill/login',
             type: 'POST',
             data: JSON.stringify({username: username, password: password}),
             contentType: 'application/json; charset=utf-8',

@@ -1,4 +1,4 @@
-## Cmssy, the tidy API-only CMS
+## Chill with this REST-only CMS
 
 > You provide the site, the CMS provides data storage and authentication
 
@@ -16,16 +16,16 @@
 - [x] Serve ./public/ as static files, this is your site.
 
 
-- [x] Enter Installation mode if ./cmssy.json's admin array is empty.
+- [x] Enter Installation mode if ./chill-database.json's admin array is empty.
 
 
 - [x] When in installation mode, /setup becomes available to browsers
   - [x] A web UI provided by the CMS lets the user create an admin account.
-  - [x] Credentials stored in ./cmssy.json which is not API accessible.
+  - [x] Credentials stored in ./chill-database.json which is not API accessible.
   - [x] Installation mode is then disabled.
 
 
-- [x] GET /cmssy/status, returns info about the server, including whether the user is authenticated. Unauthenticated users may only perform GET requests.
+- [x] GET /chill/status, returns info about the server, including whether the user is authenticated. Unauthenticated users may only perform GET requests.
 
 
 - [x] /login lets the user start a session. The site's dashboard should redirect users here first to make sure they have write access.

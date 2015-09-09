@@ -1,11 +1,11 @@
 {
-  "name": "cmssy",
+  "name": "chill-cms",
   "version": "0.0.1",
   "main": "server.js",
-  "description": "The tidy CMS with a REST API",
-  "bin": "./cmssy.js",
+  "description": "Chill with this REST-only CMS",
+  "bin": "./chill.js",
   "scripts": {
-    "start": "node cmssy.js",
+    "start": "node chill.js",
     "postinstall": "bower install"
   },
   "author": {
@@ -13,7 +13,7 @@
     "email": "adr.stella@gmail.com",
     "url": "http://mccxiv.me/"
   },
-  "repository": "mccxiv/cmssy",
+  "repository": "mccxiv/chill-cms",
   "preferGlobal": true,
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",

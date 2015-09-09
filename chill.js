@@ -11,7 +11,7 @@ var session = require('express-session');
 var app = express();
 var router = express.Router();
 var sitedb = lowdb('./site-database.json', {async: false});
-var cmssydb = lowdb('./cmssy-database.json', {async: false});
+var chilldb = lowdb('./chill-database.json', {async: false});
 var installing = false;
 var typeOfId = 'string'; // Currently only supports strings
 
@@ -36,11 +36,11 @@ function init() {
 
 function addDatabaseMixins() {
 	sitedb._.mixin(udb);
-	cmssydb._.mixin(udb);
+	chilldb._.mixin(udb);
 }
 
 function maybeEnterInstallationMode() {
-	var admins = cmssydb('admins');
+	var admins = chilldb('admins');
 	if (admins.size() < 1) {
 		console.log('No admin accounts found. Entering Installation mode.');
 		console.log('Visit /install to create an account.');
@@ -64,8 +64,8 @@ function serveStaticStuff() {
 }
 
 function handleAuthentication() {
-	app.post('/cmssy/admins', function (req, res) {
-		var admins = cmssydb('admins');
+	app.post('/chill/admins', function (req, res) {
+		var admins = chilldb('admins');
 		var username = req.body.username;
 		var password = req.body.password;
 		if (!installing) res.status(403).end();
@@ -80,8 +80,8 @@ function handleAuthentication() {
 		}
 	});
 
-	app.post('/cmssy/login', function (req, res) {
-		var admins = cmssydb('admins');
+	app.post('/chill/login', function (req, res) {
+		var admins = chilldb('admins');
 		var username = req.body.username;
 		var password = req.body.password;
 		if (!username || !password) res.status(400).end();
@@ -102,7 +102,7 @@ function handleAuthentication() {
 }
 
 function handleStatus() {
-	app.get('/cmssy/status', function (req, res) {
+	app.get('/chill/status', function (req, res) {
 		res.json({
 			admin: req.session.admin,
 			installed: !installing

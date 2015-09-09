@@ -34,7 +34,7 @@
 </head>
 <body>
 <form>
-    <h2 class="display-2">Cmssy Setup</h2>
+    <h2 class="display-2">Chill Setup</h2>
 
     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
         <input class="mdl-textfield__input" type="text" id="username">
@@ -68,7 +68,7 @@
 
 <script>
 
-    $.getJSON('../cmssy/status', function (data) {
+    $.getJSON('../chill/status', function (data) {
         if (data.installed) $('.installed').fadeIn();
         else $('form').fadeIn().css('display', 'flex');
     });
@@ -85,7 +85,7 @@
         }
 
         $.ajax({
-            url: '../cmssy/admins',
+            url: '../chill/admins',
             type: 'POST',
             data: JSON.stringify({username: username, password: password}),
             contentType: 'application/json; charset=utf-8',

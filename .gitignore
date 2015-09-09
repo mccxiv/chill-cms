@@ -1,6 +1,6 @@
 node_modules
 bower_components
 /site-database.json
-/cmssy-database.json
+/chill-database.json
 /public
 /.idea
