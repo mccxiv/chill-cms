@@ -43,7 +43,7 @@ function maybeEnterInstallationMode() {
 	var admins = chilldb('admins');
 	if (admins.size() < 1) {
 		console.log('No admin accounts found. Entering Installation mode.');
-		console.log('Visit /install to create an account.');
+		console.log('Visit /setup to create an account.');
 		installing = true;
 	}
 }
