@@ -5,6 +5,7 @@
 ##### Limitations of the first release:
 - No private content, which would only be accessible to authenticated users.
 - No file uploads. They should be hosted elsewhere for now.
+- Authentication is done via cookies
 
 
 ##### General limitations:
