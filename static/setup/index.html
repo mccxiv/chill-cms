@@ -94,7 +94,7 @@
                 $('form').fadeOut(function () {
                     $('.success').fadeIn();
                     setTimeout(function () {
-                        window.location.replace('../');
+                        window.location = document.referrer || '../';
                     }, 2000);
                 });
             },
