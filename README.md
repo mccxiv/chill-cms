@@ -36,9 +36,7 @@ GET `/chill/status`
 If needed, redirect users to `/login`.
 > They will come back to the same URL but this time logged in.
 
-
-
-
+---
 
 ##### What you get
 - A REST endpoint. Create, read, update and delete any JSON object
@@ -51,6 +49,8 @@ If needed, redirect users to `/login`.
 ##### What you don't get
 - Admin dashboard and content editor
   - That's up to you, just save content to the server using the API
+
+---
 
 ##### Do I need to learn a complex JavaScript framework?
 No, jQuery's ajax functions are enough to save and read data.
