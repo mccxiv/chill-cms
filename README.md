@@ -1,7 +1,8 @@
-> You provide the site, the CMS provides data storage and authentication
+# Chill, zero config REST server with user management
+> A zero configuration API only, REST only CMS
 
 For those of us that have realized websites are applications, not documents.  
-Chill is a more useful and opinionated version of [json-server](https://github.com/typicode/json-server).
+Chill is a more opinionated version of [json-server](https://github.com/typicode/json-server).
 
 ##### Install it using npm
 ```
