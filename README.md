@@ -3,7 +3,7 @@
 
 ##### Current Status
 Lacks many features including search and filtering, do it on the client instead.  
-Obviously this means the current version of chill is not suitable for anything bigger than a small personal site.
+Obviously this means the current version is not suitable for anything bigger than a personal site.
 
 ---
 
