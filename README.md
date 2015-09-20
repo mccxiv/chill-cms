@@ -1,6 +1,12 @@
 # Chill, zero config REST server with user management
 > A zero configuration API only, REST only CMS
 
+##### Current Status
+Lacks many features including search and filtering, do it on the client instead.  
+Obviously this means the current version of chill is not suitable for anything bigger than a small personal site.
+
+---
+
 For those of us that have realized websites are applications, not documents.  
 Chill is a more opinionated version of [json-server](https://github.com/typicode/json-server).
 
