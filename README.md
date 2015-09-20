@@ -1,48 +1,68 @@
-## Chill with this REST-only CMS
-
 > You provide the site, the CMS provides data storage and authentication
+
+For those of us that have realized websites are applications, not documents.  
+Chill is a more useful and opinionated version of [json-server](https://github.com/typicode/json-server).
+
+##### Install it using npm
+```
+npm install chill-cms -g
+```
+
+##### Use it
+Execute `chill-cms`.
+> Chill will serve the `./public` directory and create the user and content databases, as plain JSON files. Place your website inside of the `./public` directory.
+
+GET, POST and PUT json objects to `/api/:resource`
+> Replace `:resource` with whatever name you wish. There is no schema to worry about, all objects are saved to an array. Make sure POST and PUT actions send raw json in the request body. 
+
+>Ids are always saved as strings to avoid confusion. The `id` property will be generated if missing.
+
+GET and DELETE to `/api/:resource/:id`
+> Replace `:resource` with the resource name and `:id` with the identifier
+
+##### User management
+POST, PUT and DELETE require the user to be logged in as an admin.
+
+GET `/chill/status`
+> Tells you if a user is logged in as an admin.
+
+If needed, redirect users to `/login`.
+> They will come back to the same URL but this time logged in.
+
+
+
+
+
+##### What you get
+- A REST endpoint. Create, read, update and delete any JSON object
+  - All clients have read access
+  - Only logged in clients have write access
+
+
+- Redirect users to /login and they'll come back authenticated
+
+##### What you don't get
+- Admin dashboard and content editor
+  - That's up to you, just save content to the server using the API
+
+##### Do I need to learn a complex JavaScript framework?
+No, jQuery's ajax functions are enough to save and read data.
+
+##### Is this only for single page apps?
+No, you can use a collection of .html files that link to each other, if you prefer.
+
+##### Why use this over say Wordpress?
+- No need to write server side code.
+- Add all the custom fields you want to your editor.
+- Not locked into a brand. Your very same site could run on similar implementations.
+- Use the same server for web, desktop and mobile apps.
 
 ##### Limitations of the first release:
 - No private content, which would only be accessible to authenticated users.
 - No file uploads. They should be hosted elsewhere for now.
 - Authentication is done via cookies
-
-
-##### General limitations:
 - No server side validation.
   - This means only trusted users can perform write operations. Site visitors cannot trigger an action that would add records to the database.
 
 
-##### Implementation checklist:
-- [x] Serve ./public/ as static files, this is your site.
-
-
-- [x] Enter Installation mode if ./chill-database.json's admin array is empty.
-
-
-- [x] When in installation mode, /setup becomes available to browsers
-  - [x] A web UI provided by the CMS lets the user create an admin account.
-  - [x] Credentials stored in ./chill-database.json which is not API accessible.
-  - [x] Installation mode is then disabled.
-
-
-- [x] GET /chill/status, returns info about the server, including whether the user is authenticated. Unauthenticated users may only perform GET requests.
-
-
-- [x] /login lets the user start a session. The site's dashboard should redirect users here first to make sure they have write access.
-
-
-- [x] Save and read content via a REST API
- - [x] GET /api/cars, GET /api/cars/3
-   - Gets all cars or one with a specific `id`
- - [x] POST /api/cars
-   - Add an object to the cars array
-   - `cars` array is created on the fly if not found
-   - Error on `id` conflict
-   - Generates `id` if missing
- - [x] PUT /api/cars
-   - Replace existing car, error if `id` not found
- - [x] DELETE /api/cars/3
-   - Remove specific car from array, error if not found
-
-
+At the end of the day Chill is just an API, your site will be easily ported when someone decides to write an alternative Chill-compatible server.
