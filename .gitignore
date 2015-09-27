@@ -3,4 +3,5 @@ bower_components
 /site-database.json
 /chill-database.json
 /public
+/files
 /.idea

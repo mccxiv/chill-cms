@@ -19,18 +19,20 @@ app.use(session({
 	saveUninitialized: false
 }));
 
-app.use('/', express.static(path.resolve(__dirname, 'static/')));
-app.use('/', express.static(path.resolve(process.cwd(), 'public/')));
+app.use('/', express.static(path.resolve(__dirname, 'static')));
+app.use('/', express.static(path.resolve(process.cwd(), 'public')));
+app.use('/files', express.static(path.resolve(process.cwd(), 'files')));
 app.use('/api', apiRouter);
 app.post('/chill/login', authentication.postLogin);
 app.post('/chill/admins', authentication.postAdmins);
-//app.get('/chill/uploads', requireAuthentication, uploads.getUploads);
-//app.post('/chill/uploads', requireAuthentication, uploads.postUpload);
+app.get('/chill/uploads', requireAuthentication, uploads.getUploads);
+app.post('/chill/uploads', requireAuthentication, uploads.postUpload);
+app.delete('/chill/uploads/:filename', requireAuthentication, uploads.deleteUpload);
 app.get('/chill/status', status);
 
 function requireAuthentication(req, res, next) {
 	if (req.session.admin) next();
-	else req.status(403).end();
+	else res.status(403).end();
 }
 
 console.log('Chill CMS is now running...');
