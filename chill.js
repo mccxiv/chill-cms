@@ -22,7 +22,7 @@ app.use(session({
 app.use('/', express.static(path.resolve(__dirname, 'static')));
 app.use('/', express.static(path.resolve(process.cwd(), 'public')));
 app.use('/files', express.static(path.resolve(process.cwd(), 'files')));
-app.use('/api', apiRouter);
+app.use('/chill/api', apiRouter);
 app.post('/chill/login', authentication.postLogin);
 app.post('/chill/admins', authentication.postAdmins);
 app.get('/chill/uploads', requireAuthentication, uploads.getUploads);
