@@ -10,10 +10,10 @@ var uploads = require('./lib/uploadMiddlewares.js');
 var authentication = require('./lib/authenticationMiddlewares.js');
 
 var app = express();
-var args = {port: undefined};
+var args = {port: getPortArg()};
+var port = args.port || process.env.PORT || 4600;
 
-parseArgs();
-app.listen(args.port || process.env.PORT || 4600);
+app.listen(port);
 app.use(bodyParser.json());
 app.use(session({
 	secret: 'tall gels',
@@ -37,15 +37,16 @@ function requireAuthentication(req, res, next) {
 	else res.status(403).end();
 }
 
-function parseArgs() {
-	process.argv.forEach(function (val) {
-		if (startsWith(val, '--port=')) args.port = val.substring(7);
-		else if (startsWith(val, '-p=')) args.port = val.substring(3);
-	});
+function getPortArg() {
+	for (var i = 0; i < process.argv.length; i++) {
+		var val = process.argv[i];
+		if (startsWith(val, '--port=')) return val.substring(7);
+		else if (startsWith(val, '-p=')) return val.substring(3);
+	}
 }
 
 function startsWith(string, beginsWith) {
 	return string.indexOf(beginsWith) === 0;
 }
 
-console.log('Chill CMS is now running...');
+console.log('Chill CMS is now running on port '+port+' ...');
