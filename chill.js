@@ -11,7 +11,7 @@ var authentication = require('./lib/authenticationMiddlewares.js');
 
 var app = express();
 
-app.listen(80);
+app.listen(process.env.PORT || 4560);
 app.use(bodyParser.json());
 app.use(session({
 	secret: 'tall gels',
