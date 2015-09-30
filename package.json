@@ -6,7 +6,7 @@
   "bin": "./chill.js",
   "scripts": {
     "start": "node chill.js",
-    "postinstall": "bower install --allow-root"
+    "postinstall": "bower install"
   },
   "author": {
     "name": "Andrea Stella",
@@ -14,7 +14,6 @@
     "url": "http://mccxiv.me/"
   },
   "repository": "mccxiv/chill-cms",
-  "preferGlobal": true,
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.13.3",
