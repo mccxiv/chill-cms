@@ -6,7 +6,7 @@
   "bin": "./chill.js",
   "scripts": {
     "start": "node chill.js",
-    "postinstall": "bower install"
+    "postinstall": "bower install --allow-root"
   },
   "author": {
     "name": "Andrea Stella",
