@@ -10,8 +10,9 @@ var uploads = require('./lib/uploadMiddlewares.js');
 var authentication = require('./lib/authenticationMiddlewares.js');
 
 var app = express();
-var args = {port: getPortArg()};
+var args = {port: getPortArg(), site: getSiteArg()};
 var port = args.port || process.env.PORT || 4600;
+var site = path.resolve(args.site || 'public');
 
 app.listen(port);
 app.use(bodyParser.json());
@@ -22,7 +23,7 @@ app.use(session({
 }));
 
 app.use('/', express.static(path.resolve(__dirname, 'static')));
-app.use('/', express.static(path.resolve(process.cwd(), 'public')));
+app.use('/', express.static(site));
 app.use('/files', express.static(path.resolve(process.cwd(), 'files')));
 app.use('/chill/api', apiRouter);
 app.post('/chill/login', authentication.postLogin);
@@ -38,10 +39,21 @@ function requireAuthentication(req, res, next) {
 }
 
 function getPortArg() {
+	return parseArg('--port') || parseArg('-p');
+}
+
+function getSiteArg() {
+	return parseArg('--site') || parseArg('-s');
+}
+
+/**
+ * Checks process.argv for one beginning with arg+'='
+ * @param {string} arg
+ */
+function parseArg(arg) {
 	for (var i = 0; i < process.argv.length; i++) {
 		var val = process.argv[i];
-		if (startsWith(val, '--port=')) return val.substring(7);
-		else if (startsWith(val, '-p=')) return val.substring(3);
+		if (startsWith(val, arg+'=')) return val.substring(arg.length+1);
 	}
 }
 

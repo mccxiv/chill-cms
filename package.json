@@ -1,8 +1,8 @@
 {
   "name": "chill-cms",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "main": "server.js",
-  "description": "Chill with this REST-only CMS",
+  "description": "The REST-only CMS",
   "bin": "./chill.js",
   "scripts": {
     "start": "node chill.js",
