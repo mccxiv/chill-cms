@@ -61,4 +61,7 @@ function startsWith(string, beginsWith) {
 	return string.indexOf(beginsWith) === 0;
 }
 
-console.log('Chill CMS is now running on port '+port+' ...');
+console.log('Chill CMS is now running...');
+console.log('- port: '+port);
+console.log('- static files: '+site);
+console.log('- site data: '+process.cwd());
