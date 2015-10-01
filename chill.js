@@ -11,7 +11,7 @@ var authentication = require('./lib/authenticationMiddlewares.js');
 
 var app = express();
 var args = {port: getPortArg(), site: getSiteArg()};
-var port = args.port || process.env.PORT || 4600;
+var port = args.port || process.env.PORT || 80;
 var site = path.resolve(args.site || 'public');
 
 app.listen(port);
