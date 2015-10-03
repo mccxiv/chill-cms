@@ -33,6 +33,12 @@ app.post('/chill/uploads', requireAuthentication, uploads.postUpload);
 app.delete('/chill/uploads/:filename', requireAuthentication, uploads.deleteUpload);
 app.get('/chill/status', status);
 
+/* Anything else, serve index.html for pretty URLs */
+// TODO this should be an option
+app.all('/*', function(req, res) {
+	res.sendFile('index.html', {root: site});
+});
+
 function requireAuthentication(req, res, next) {
 	if (req.session.admin) next();
 	else res.status(403).end();
