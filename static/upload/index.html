@@ -72,7 +72,7 @@
                     data.forEach(function(filename) {
                         var media;
                         var file = $('<div class="file mdl-shadow--2dp">' +
-                                '<a class="media" href="'+absolutePath(filename)+'"></a>' +
+                                '<a class="media" href="../files/'+filename+'"></a>' +
                                 '<span class="filename">'+filename+'</span><br>' +
                                 '<a class="remove" data-filename="'+filename+'">Remove</a>' +
                                 '</div>');
@@ -82,12 +82,6 @@
                         file.appendTo('.list');
                     });
                 });
-            }
-
-            function absolutePath(href) {
-                var link = document.createElement('a');
-                link.href = href;
-                return (link.protocol+'//'+link.host+link.pathname+link.search+link.hash);
             }
 
             function remove(filename) {
