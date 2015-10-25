@@ -13,6 +13,7 @@
     "email": "adr.stella@gmail.com",
     "url": "http://mccxiv.me/"
   },
+  "license": "ISC",
   "repository": "mccxiv/chill-cms",
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
