@@ -3,6 +3,7 @@
 var path = require('path');
 var express = require('express');
 var bodyParser = require('body-parser');
+var compression = require('compression');
 var session = require('express-session');
 var apiRouter = require('./lib/apiRouter.js');
 var status = require('./lib/statusMiddleware.js');
@@ -15,6 +16,7 @@ var port = args.port || process.env.PORT || 80;
 var site = path.resolve(args.site || 'public');
 
 app.listen(port);
+app.use(compression());
 app.use(bodyParser.json());
 app.use(session({
 	secret: 'tall gels',
